@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DLMS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/dashboard.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="sidebar-title">eShelf</div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="active"
+          ><span class="icon">📊</span> Dashboard</a
+        >
+        <a href="bookmanagement.html"
+          ><span class="icon">📚</span> Book Management</a
+        >
+        <a href="membermanagement.html"><span class="icon">👥</span> Member Management</a>
+        <a href="#"><span class="icon">📝</span> Issue Management</a>
+        <a href="#"><span class="icon">🔄</span> Return Management</a>
+        <div class="container">
+        <div class="profile-dropdown">
+          <button class="profile-btn">John Doe ▼</button>
+          <div class="profile-menu">
+            <a href="#">View Profile</a>
+            <a href="#">Settings</a>
+            <a href="login.html">Logout</a>
+          </div>
+        </div>
+      </div>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <h1 class="dashboard-title">Dashboard</h1>
+      <h2 id="username-display"></h2>
+      <div class="dashboard-cards">
+        <a href="newarrivals.html" class="dashboard-card">
+          <h2 class="dashboard-card-title">New Arrivals</h2>
+          <div class="dashboard-card-content">
+            Browse the latest books added to the library collection.
+          </div>
+        </a>
+        <a href="overduebooks.html" class="dashboard-card">
+          <h2 class="dashboard-card-title">Overdue Books</h2>
+          <div class="dashboard-card-content">
+            View a list of overdue books and notify members.
+          </div>
+        </a>
+        <a href="announcements.html" class="dashboard-card">
+          <h2 class="dashboard-card-title">Library Announcements</h2>
+          <div class="dashboard-card-content">
+            Stay updated with the latest library news and events.
+          </div>
+        </a>
+        <a href="reports.html" class="dashboard-card">
+          <h2 class="dashboard-card-title">Reports</h2>
+          <div class="dashboard-card-content">
+            Generate and analyze library performance and activity reports.
+          </div>
+        </a>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (username) {
+          document.getElementById('username-display').textContent = `Hello, ${username}`;
+        }
+      });
+    </script>
+  </body>
+</html>

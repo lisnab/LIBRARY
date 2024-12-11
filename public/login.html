@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Login Form HTML CSS | CodingNepal</title>
+  <link rel="stylesheet" href="styles/Login.css" />
+  <!-- Font Awesome CDN link for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <div class="title"><span>Login Form</span></div>
+    <form action="/login" method="POST">
+      <div class="row">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="Username" required />
+      </div>
+      <div class="row">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="Password" required />
+      </div>
+      <div class="pass"><a href="#">Forgot password?</a></div>
+      <div class="row button">
+        <input type="submit" value="Login" />
+      </div>
+      <div class="signup-link">Not a member? <a href="Register.html">Signup now</a></div>
+    </form>
+  </div>
+  <script src="Login.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded in the browser!');
+      const form = document.querySelector('form');
+      const errorMessage = document.createElement('div');
+      errorMessage.style.color = 'red';
+      form.appendChild(errorMessage);
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+          data[key] = value;
+        });
+        console.log('Form data:', data); // Log form data for debugging
+        try {
+          const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+          if (response.ok) {
+            const result = await response.json();
+            localStorage.setItem('username', result.username);
+            window.location.href = result.redirectUrl;
+          } else {
+            const errorResponse = await response.json();
+            errorMessage.textContent = `Error: ${errorResponse.error}`;
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          errorMessage.textContent = 'Failed to fetch';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

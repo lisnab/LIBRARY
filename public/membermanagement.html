@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/membermanagement.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-title">eShelf</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html"><span class="icon">📊</span> Dashboard</a>
+        <a href="bookmanagement.html" ><span class="icon">📚</span> Book Management</a>
+        <a href="membermanagement.html" class="active"><span class="icon">👥</span> Member Management</a>
+        <a href="#"><span class="icon">📝</span> Issue Management</a>
+        <a href="#"><span class="icon">🔄</span> Return Management</a>
+        <div class="container">
+            <div class="profile-dropdown">
+                <button class="profile-btn">John Doe ▼</button>
+                <div class="profile-menu">
+                    <a href="#">View Profile</a>
+                    <a href="#">Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <h1>Member Management System</h1>
+    
+    <div class="form-container">
+        <h3>Search Member</h3>
+    <input type="text" id="searchIdNo" placeholder="Enter ID No" oninput="filterMembers()">
+    
+    </div>
+
+    <div class="form-container">
+        <input id="idNo" placeholder="ID No">
+        <input id="nameInput" placeholder="Name">
+        <input id="emailInput" placeholder="Email">
+        <input id="phoneInput" placeholder="Phone">
+
+
+        <select id="sectionInput">
+            <option value="">Select Section</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+        </select>
+        <select id="yearInput">
+            <option value="">Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+            <option value="Masters">Masters</option>
+            <option value="PhD">PhD</option>
+        </select>
+        <button class="btn btn-primary" onclick="addMember()">Add Member</button>
+    </div>
+
+    <table id="memberList" border="1">
+        <thead>
+          <tr>
+            <th>ID No</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Section</th>
+            <th>Year</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      
+      <!-- Input for searching a member -->
+     
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal">
+    <div class="modal-content">
+        <h2>Edit Member Details</h2>
+        <input type="text" id="editIdInput" placeholder="ID Number">
+        <input type="text" id="editNameInput" placeholder="Full Name">
+        <input type="email" id="editEmailInput" placeholder="Email">
+        <input type="tel" id="editPhoneInput" placeholder="Phone">
+        <select id="editSectionInput">
+            <option value="">Select Section</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+        </select>
+        <select id="editYearInput">
+            <option value="">Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+            <option value="Masters">Masters</option>
+            <option value="PhD">PhD</option>
+        </select>
+        <button class="btn btn-secondary" onclick="saveMemberUpdate()">Save Changes</button>
+        <button class="btn" onclick="closeEditModal()">Cancel</button>
+    </div>
+</div>
+<script>
+    // Add a new member
+    async function addMember() {
+        const idNo = document.getElementById("idNo").value;
+        const name = document.getElementById("nameInput").value;
+        const email = document.getElementById("emailInput").value;
+        const phone = document.getElementById("phoneInput").value;
+        const section = document.getElementById("sectionInput").value;
+        const year = document.getElementById("yearInput").value;
+
+        if (!idNo || !name || !email || !phone || !section || !year) {
+            alert("Please fill all the fields!");
+            return;
+        }
+
+        const response = await fetch('/api/members', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ idNo, name, email, phone, section, year })
+        });
+
+        if (response.ok) {
+            const newMember = await response.json();
+            const table = document.getElementById("memberList").querySelector("tbody");
+            const newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                <td>${newMember.idNo}</td>
+                <td>${newMember.name}</td>
+                <td>${newMember.email}</td>
+                <td>${newMember.phone}</td>
+                <td>${newMember.section}</td>
+                <td>${newMember.year}</td>
+                <td>
+                    <button onclick="editMember(this)">Edit</button>
+                    <button onclick="deleteMember(this)">Delete</button>
+                </td>
+            `;
+
+            table.appendChild(newRow);
+            clearInputs();
+        } else {
+            alert("Failed to add member!");
+        }
+    }
+
+    // Delete a member
+    async function deleteMember(button) {
+        const row = button.parentElement.parentElement;
+        const idNo = row.cells[0].innerText;
+
+        const response = await fetch(`/api/members/${idNo}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            row.remove();
+        } else {
+            alert("Failed to delete member!");
+        }
+    }
+
+    // Edit a member
+    async function editMember(button) {
+        const row = button.parentElement.parentElement;
+        const idNo = row.cells[0].innerText;
+        const name = prompt("Enter new name:", row.cells[1].innerText);
+        const email = prompt("Enter new email:", row.cells[2].innerText);
+        const phone = prompt("Enter new phone:", row.cells[3].innerText);
+        const section = prompt("Enter new section:", row.cells[4].innerText);
+        const year = prompt("Enter new year:", row.cells[5].innerText);
+
+        if (!name || !email || !phone || !section || !year) {
+            alert("All fields are required!");
+            return;
+        }
+
+        const response = await fetch(`/api/members/${idNo}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, phone, section, year })
+        });
+
+        if (response.ok) {
+            row.cells[1].innerText = name;
+            row.cells[2].innerText = email;
+            row.cells[3].innerText = phone;
+            row.cells[4].innerText = section;
+            row.cells[5].innerText = year;
+            alert("Member updated successfully!");
+        } else {
+            alert("Failed to update member!");
+        }
+    }
+
+    // Filter members by ID
+    function filterMembers() {
+        const idNo = document.getElementById("searchIdNo").value.toLowerCase();
+        const table = document.getElementById("memberList").querySelector("tbody");
+
+        for (const row of table.rows) {
+            const rowId = row.cells[0].innerText.toLowerCase();
+            if (idNo && rowId !== idNo) {
+                row.classList.add("hidden");
+            } else {
+                row.classList.remove("hidden");
+            }
+        }
+    }
+</script>
+</body>
+</html>

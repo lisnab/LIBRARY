@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library User Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/user_dashboard.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-title">Library Portal</div>
+        <nav class="sidebar-nav">
+            <a href="#" class="sidebar-menu-item active">
+                <i class="fas fa-book"></i> Available Books
+            </a>
+            <a href="#" class="sidebar-menu-item">
+                <i class="fas fa-book-open"></i> My Borrowed Books
+            </a>
+            <a href="#" class="sidebar-menu-item">
+                <i class="fas fa-search"></i> Search Books
+            </a>
+            <a href="#" class="sidebar-menu-item">
+                <i class="fas fa-bookmark"></i> Reserve Book
+            </a>
+            <a href="#" class="sidebar-menu-item">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="#" class="sidebar-menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="sidebar-menu-item">
+                <i class="fas fa-users"></i> Member Management
+            </a>
+            <div class="more-options-container">
+                <a href="#" class="sidebar-menu-item" id="more-options">
+                    <i class="fas fa-ellipsis-h"></i> More Options
+                </a>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="#" class="sidebar-menu-item">
+                        <i class="fas fa-bell"></i> Notifications
+                    </a>
+                    <a href="#" class="sidebar-menu-item">
+                        <i class="fas fa-question-circle"></i> Help
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-dropdown">
+                <button class="profile-btn">John Doe ▼</button>
+                <div class="profile-menu">
+                    <a href="#">View Profile</a>
+                    <a href="#">Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="dashboard-title">User Dashboard</h1>
+        <div class="dashboard-cards">
+            <a href="#" class="dashboard-card">
+                <h2 class="dashboard-card-title">Available Books</h2>
+                <div class="dashboard-card-content">
+                    Browse the books available in the library.
+                </div>
+            </a>
+            <a href="#" class="dashboard-card">
+                <h2 class="dashboard-card-title">My Borrowed Books</h2>
+                <div class="dashboard-card-content">
+                    View and manage the books you have borrowed.
+                </div>
+            </a>
+            <a href="#" class="dashboard-card">
+                <h2 class="dashboard-card-title">Search Books</h2>
+                <div class="dashboard-card-content">
+                    Search for books in the library catalog.
+                </div>
+            </a>
+            <a href="#" class="dashboard-card">
+                <h2 class="dashboard-card-title">Reserve Book</h2>
+                <div class="dashboard-card-content">
+                    Reserve a book to borrow later.
+                </div>
+            </a>
+        </div>
+
+        <div id="available-books" class="section active">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search books...">
+                <button class="search-button">Search</button>
+            </div>
+            <div class="book-grid" id="book-grid">
+                <!-- Book cards will be dynamically generated here -->
+            </div>
+        </div>
+
+        <div id="my-books" class="section">
+            <h2>My Borrowed Books</h2>
+            <!-- Borrowed books list will be dynamically generated -->
+        </div>
+
+        <div id="search" class="section">
+            <h2>Advanced Book Search</h2>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Title, Author, Genre">
+                <button class="search-button">Search</button>
+            </div>
+            <!-- Search results will be dynamically generated -->
+        </div>
+
+        <div id="reserve" class="section">
+            <h2>Reserve a Book</h2>
+            <!-- Book reservation interface -->
+        </div>
+
+        <div id="profile" class="section">
+            <h2>User Profile</h2>
+            <!-- Profile edit form -->
+        </div>
+
+        <div id="settings" class="section">
+            <h2>Account Settings</h2>
+            <!-- Settings options -->
+        </div>
+
+        <div id="member-management" class="section">
+            <h2>Member Management</h2>
+            <div class="member-actions">
+                <button id="add-member-btn">Add Member</button>
+                <button id="edit-member-btn">Edit Member</button>
+                <button id="delete-member-btn">Delete Member</button>
+            </div>
+            <table id="member-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Member rows will be dynamically generated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="user.js"></script>
+</body>
+</html>
